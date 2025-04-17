@@ -1,0 +1,459 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Centre de Santé WALKER</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3B82F6',
+            secondary: '#10B981',
+            dark: '#1F2937',
+            light: '#F9FAFB',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+    }
+    
+    .btn-primary {
+      @apply bg-primary hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg;
+    }
+    
+    .btn-secondary {
+      @apply bg-secondary hover:bg-emerald-700 text-white font-medium py-2 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg;
+    }
+    
+    .nav-link {
+      @apply text-gray-700 hover:text-primary transition-colors duration-300 font-medium;
+    }
+    
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+    
+    @keyframes floating {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen bg-gray-50 text-gray-800">
+  <!-- Navbar -->
+  <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-20 items-center">
+        <div class="flex-shrink-0 flex items-center">
+          <a href="{{ url_for('auth_routes.home') }}" class="flex items-center space-x-2">
+            <div class="gradient-bg p-2 rounded-lg">
+              <i class="fas fa-heartbeat text-white text-2xl"></i>
+            </div>
+            <span class="text-xl font-bold text-dark">Centre WALKER</span>
+          </a>
+        </div>
+        <div class="hidden md:block">
+          <div class="ml-10 flex items-center space-x-8">
+            <a href="#" class="nav-link">Accueil</a>
+            <a href="#" class="nav-link">Services</a>
+            <a href="#" class="nav-link">Médecins</a>
+            <a href="#" class="nav-link">Contact</a>
+          </div>
+        </div>
+        <div class="flex items-center space-x-4">
+            {% if session.get('user_id') %}
+              <span class="font-semibold">👤 {{ session.username }}</span>
+              <strong>{{ session.role }}</strong>
+              <a href="{{ url_for('auth_routes.dashboard') }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 flex items-center">
+                <i class="fas fa-chart-line mr-2"></i> Dashboard
+              </a>
+              <a href="{{ url_for('auth_routes.logout') }}" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 flex items-center">
+                <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion
+              </a>
+            {% else %}
+              <a href="{{ url_for('auth_routes.login') }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 flex items-center">
+                <i class="fas fa-sign-in-alt mr-2"></i> Connexion
+              </a>
+              <a href="{{ url_for('auth_routes.register') }}" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 flex items-center">
+                <i class="fas fa-user-plus mr-2"></i> Inscription
+              </a>
+              <button class="md:hidden text-gray-500 hover:text-blue-600 focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+              </button>
+            {% endif %}
+          </div>          
+      </div>
+    </div>
+  </nav>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- En-tête du dashboard -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-dark mb-2">Tableau de bord</h1>
+    <div class="flex items-center text-gray-600">
+      <i class="fas fa-home mr-2"></i>
+      <span>Accueil</span>
+      <i class="fas fa-chevron-right mx-2 text-sm"></i>
+      <span class="text-primary">Tableau de bord</span>
+    </div>
+  </div>
+
+  <!-- Cartes de statistiques -->
+  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Carte 1 -->
+    <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-primary">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-gray-500">Rendez-vous aujourd'hui</p>
+          <h3 class="text-2xl font-bold mt-1">8</h3>
+        </div>
+        <div class="bg-primary bg-opacity-10 p-3 rounded-full">
+          <i class="fas fa-calendar-day text-primary text-xl"></i>
+        </div>
+      </div>
+      <div class="mt-4">
+        <a href="#" class="text-primary text-sm font-medium hover:underline flex items-center">
+          Voir tous <i class="fas fa-arrow-right ml-1 text-xs"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Carte 2 -->
+    <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-secondary">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-gray-500">Nouveaux patients</p>
+          <h3 class="text-2xl font-bold mt-1">12</h3>
+        </div>
+        <div class="bg-secondary bg-opacity-10 p-3 rounded-full">
+          <i class="fas fa-user-plus text-secondary text-xl"></i>
+        </div>
+      </div>
+      <div class="mt-4">
+        <a href="#" class="text-secondary text-sm font-medium hover:underline flex items-center">
+          Voir liste <i class="fas fa-arrow-right ml-1 text-xs"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Carte 3 -->
+    <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-yellow-500">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-gray-500">RDV en attente</p>
+          <h3 class="text-2xl font-bold mt-1">5</h3>
+        </div>
+        <div class="bg-yellow-500 bg-opacity-10 p-3 rounded-full">
+          <i class="fas fa-clock text-yellow-500 text-xl"></i>
+        </div>
+      </div>
+      <div class="mt-4">
+        <a href="#" class="text-yellow-600 text-sm font-medium hover:underline flex items-center">
+          Traiter <i class="fas fa-arrow-right ml-1 text-xs"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Carte 4 -->
+    <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-purple-500">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-gray-500">Revenu mensuel</p>
+          <h3 class="text-2xl font-bold mt-1">24,560€</h3>
+        </div>
+        <div class="bg-purple-500 bg-opacity-10 p-3 rounded-full">
+          <i class="fas fa-euro-sign text-purple-500 text-xl"></i>
+        </div>
+      </div>
+      <div class="mt-4">
+        <a href="#" class="text-purple-600 text-sm font-medium hover:underline flex items-center">
+          Détails <i class="fas fa-arrow-right ml-1 text-xs"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grille principale -->
+  <div class="grid lg:grid-cols-3 gap-8">
+    <!-- Colonne 1 - Rendez-vous à venir -->
+    <div class="lg:col-span-2">
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h2 class="text-xl font-semibold text-dark">Rendez-vous à venir</h2>
+        </div>
+        <div class="divide-y divide-gray-200">
+          <!-- RDV 1 -->
+          <div class="p-6 hover:bg-gray-50 transition-colors duration-150">
+            <div class="flex items-start">
+              <div class="bg-primary bg-opacity-10 p-3 rounded-lg mr-4">
+                <i class="fas fa-calendar-check text-primary text-xl"></i>
+              </div>
+              <div class="flex-grow">
+                <div class="flex justify-between">
+                  <h3 class="font-medium">Consultation cardiologie</h3>
+                  <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Confirmé</span>
+                </div>
+                <p class="text-gray-600 text-sm mt-1">Dr. Sophie Martin</p>
+                <div class="flex items-center text-sm text-gray-500 mt-2">
+                  <i class="far fa-clock mr-2"></i>
+                  <span>Aujourd'hui, 14h30 - 15h15</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-end mt-4 space-x-2">
+              <button class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-lg transition-colors duration-150">
+                <i class="fas fa-phone mr-1"></i> Rappeler
+              </button>
+              <button class="text-xs bg-primary hover:bg-blue-700 text-white px-3 py-1 rounded-lg transition-colors duration-150">
+                <i class="fas fa-edit mr-1"></i> Modifier
+              </button>
+            </div>
+          </div>
+
+          <!-- RDV 2 -->
+          <div class="p-6 hover:bg-gray-50 transition-colors duration-150">
+            <div class="flex items-start">
+              <div class="bg-secondary bg-opacity-10 p-3 rounded-lg mr-4">
+                <i class="fas fa-calendar-check text-secondary text-xl"></i>
+              </div>
+              <div class="flex-grow">
+                <div class="flex justify-between">
+                  <h3 class="font-medium">Bilan neurologique</h3>
+                  <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">En attente</span>
+                </div>
+                <p class="text-gray-600 text-sm mt-1">Dr. Jean Dupont</p>
+                <div class="flex items-center text-sm text-gray-500 mt-2">
+                  <i class="far fa-clock mr-2"></i>
+                  <span>Demain, 09h00 - 10h30</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-end mt-4 space-x-2">
+              <button class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-lg transition-colors duration-150">
+                <i class="fas fa-phone mr-1"></i> Rappeler
+              </button>
+              <button class="text-xs bg-primary hover:bg-blue-700 text-white px-3 py-1 rounded-lg transition-colors duration-150">
+                <i class="fas fa-edit mr-1"></i> Modifier
+              </button>
+            </div>
+          </div>
+
+          <!-- RDV 3 -->
+          <div class="p-6 hover:bg-gray-50 transition-colors duration-150">
+            <div class="flex items-start">
+              <div class="bg-purple-500 bg-opacity-10 p-3 rounded-lg mr-4">
+                <i class="fas fa-calendar-check text-purple-500 text-xl"></i>
+              </div>
+              <div class="flex-grow">
+                <div class="flex justify-between">
+                  <h3 class="font-medium">Suivi orthopédique</h3>
+                  <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Confirmé</span>
+                </div>
+                <p class="text-gray-600 text-sm mt-1">Dr. Marie Leroy</p>
+                <div class="flex items-center text-sm text-gray-500 mt-2">
+                  <i class="far fa-clock mr-2"></i>
+                  <span>12/06/2023, 11h15 - 12h00</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-end mt-4 space-x-2">
+              <button class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-lg transition-colors duration-150">
+                <i class="fas fa-phone mr-1"></i> Rappeler
+              </button>
+              <button class="text-xs bg-primary hover:bg-blue-700 text-white px-3 py-1 rounded-lg transition-colors duration-150">
+                <i class="fas fa-edit mr-1"></i> Modifier
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t border-gray-200 text-right">
+          <a href="#" class="text-primary font-medium hover:underline">Voir tous les rendez-vous</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonne 2 - Statistiques et actions rapides -->
+    <div class="space-y-6">
+      <!-- Graphique -->
+      <div class="bg-white rounded-xl shadow-md p-6">
+        <h2 class="text-xl font-semibold text-dark mb-4">Activité hebdomadaire</h2>
+        <div class="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+          <!-- Placeholder pour graphique (remplacer par un vrai graphique en production) -->
+          <p class="text-gray-500">Graphique des rendez-vous</p>
+        </div>
+        <div class="mt-4 flex justify-between text-sm text-gray-600">
+          <span>Lun: 12 RDV</span>
+          <span>Mar: 18 RDV</span>
+          <span>Mer: 15 RDV</span>
+          <span>Jeu: 22 RDV</span>
+          <span>Ven: 14 RDV</span>
+        </div>
+      </div>
+
+      <!-- Actions rapides -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h2 class="text-xl font-semibold text-dark">Actions rapides</h2>
+        </div>
+        <div class="p-6 grid grid-cols-2 gap-4">
+          <a href="#" class="flex flex-col items-center p-4 rounded-lg hover:bg-gray-50 transition-colors duration-150">
+            <div class="bg-primary bg-opacity-10 p-3 rounded-full mb-2">
+              <i class="fas fa-calendar-plus text-primary text-xl"></i>
+            </div>
+            <span class="text-sm font-medium">Nouveau RDV</span>
+          </a>
+          <a href="#" class="flex flex-col items-center p-4 rounded-lg hover:bg-gray-50 transition-colors duration-150">
+            <div class="bg-secondary bg-opacity-10 p-3 rounded-full mb-2">
+              <i class="fas fa-user-plus text-secondary text-xl"></i>
+            </div>
+            <span class="text-sm font-medium">Nouveau patient</span>
+          </a>
+          <a href="#" class="flex flex-col items-center p-4 rounded-lg hover:bg-gray-50 transition-colors duration-150">
+            <div class="bg-purple-500 bg-opacity-10 p-3 rounded-full mb-2">
+              <i class="fas fa-file-invoice-dollar text-purple-500 text-xl"></i>
+            </div>
+            <span class="text-sm font-medium">Facturation</span>
+          </a>
+          <a href="#" class="flex flex-col items-center p-4 rounded-lg hover:bg-gray-50 transition-colors duration-150">
+            <div class="bg-yellow-500 bg-opacity-10 p-3 rounded-full mb-2">
+              <i class="fas fa-chart-line text-yellow-500 text-xl"></i>
+            </div>
+            <span class="text-sm font-medium">Statistiques</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Derniers messages -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h2 class="text-xl font-semibold text-dark">Messages récents</h2>
+        </div>
+        <div class="divide-y divide-gray-200">
+          <div class="p-4 hover:bg-gray-50 transition-colors duration-150">
+            <div class="flex items-start">
+              <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Patient" class="w-10 h-10 rounded-full mr-3">
+              <div>
+                <div class="flex justify-between">
+                  <h3 class="font-medium">Marie Lambert</h3>
+                  <span class="text-xs text-gray-500">10:30</span>
+                </div>
+                <p class="text-sm text-gray-600 truncate">Bonjour, je souhaiterais reporter mon rendez-vous de demain...</p>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 hover:bg-gray-50 transition-colors duration-150">
+            <div class="flex items-start">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Patient" class="w-10 h-10 rounded-full mr-3">
+              <div>
+                <div class="flex justify-between">
+                  <h3 class="font-medium">Thomas Durand</h3>
+                  <span class="text-xs text-gray-500">Hier</span>
+                </div>
+                <p class="text-sm text-gray-600 truncate">Merci pour la consultation, où puis-je trouver mon ordonnance...</p>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 hover:bg-gray-50 transition-colors duration-150">
+            <div class="flex items-start">
+              <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Patient" class="w-10 h-10 rounded-full mr-3">
+              <div>
+                <div class="flex justify-between">
+                  <h3 class="font-medium">Sophie Martin</h3>
+                  <span class="text-xs text-gray-500">Lundi</span>
+                </div>
+                <p class="text-sm text-gray-600 truncate">J'ai besoin d'un certificat médical pour mon employeur...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t border-gray-200 text-right">
+          <a href="#" class="text-primary font-medium hover:underline">Voir tous les messages</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <!-- Footer -->
+ <footer class="bg-dark text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center mb-4">
+            <div class="gradient-bg p-2 rounded-lg mr-3">
+              <i class="fas fa-heartbeat text-white text-xl"></i>
+            </div>
+            <span class="text-xl font-bold">Centre WALKER</span>
+          </div>
+          <p class="text-gray-400 mb-4">Votre partenaire santé pour une vie plus saine et plus heureuse.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Liens rapides</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Accueil</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">À propos</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Services</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Médecins</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Services</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Cardiologie</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Neurologie</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Orthopédie</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Pédiatrie</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Radiologie</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Contact</h3>
+          <address class="not-italic text-gray-400">
+            <p class="mb-2"><i class="fas fa-map-marker-alt mr-2"></i> 123 Rue de la Santé, 75000 Paris</p>
+            <p class="mb-2"><i class="fas fa-phone-alt mr-2"></i> +33 1 23 45 67 89</p>
+            <p class="mb-2"><i class="fas fa-envelope mr-2"></i> contact@centrewalker.fr</p>
+            <p><i class="fas fa-clock mr-2"></i> Lun-Ven: 8h-20h, Sam: 9h-13h</p>
+          </address>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+        <p>&copy; 2025 Centre de Santé WALKER. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
