@@ -76,114 +76,95 @@
           </div>
         </div>
         <div class="flex items-center space-x-4">
-            {% if session.get('user_id') %}
-              <span class="font-semibold">👤 {{ session.username }}</span>
-              <a href="{{ url_for('auth_routes.dashboard') }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 flex items-center">
-                <i class="fas fa-chart-line mr-2"></i> Dashboard
-              </a>
-              <a href="{{ url_for('auth_routes.logout') }}" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 flex items-center">
-                <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion
-              </a>
-            {% else %}
-              <a href="{{ url_for('auth_routes.select') }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 flex items-center">
-                <i class="fas fa-sign-in-alt mr-2"></i> Connexion
-              </a>
-              <a href="{{ url_for('auth_routes.select') }}" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 flex items-center">
-                <i class="fas fa-user-plus mr-2"></i> Inscription
-              </a>
-              <button class="md:hidden text-gray-500 hover:text-blue-600 focus:outline-none">
-                <i class="fas fa-bars text-xl"></i>
-              </button>
-            {% endif %}
+           
           </div>
       </div>
     </div>
   </nav>
-
-  <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8">    
-      <div class="text-center mb-8">
-        <div class="gradient-bg p-3 rounded-full inline-block mb-4">
-          <i class="fas fa-sign-in-alt text-white text-2xl"></i>
-        </div>
-        <h2 class="text-3xl font-bold text-dark mb-2">Connexion</h2>
-        <p class="text-gray-600">Accédez à votre espace personnel</p>
-      </div>
-  
-      <form method="post" class="space-y-6">
-        <div>
-          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Adresse email</label>
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <i class="fas fa-envelope text-gray-400"></i>
-            </div>
-            <input type="email" id="email" name="email" required
-                   class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all"
-                   placeholder="votre@email.com">
-          </div>
-        </div>
-  
-        <div>
-          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <i class="fas fa-lock text-gray-400"></i>
-            </div>
-            <input type="password" id="password" name="password" required
-                   class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all"
-                   placeholder="••••••••">
-          </div>
-          <div class="flex justify-end mt-1">
-            <a href="#" class="text-sm text-primary hover:underline">Mot de passe oublié ?</a>
-          </div>
-        </div>
-  
-        <div class="flex items-center justify-between">
-          <div class="flex items-center">
-            <input id="remember-me" name="remember-me" type="checkbox"
-                   class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
-            <label for="remember-me" class="ml-2 block text-sm text-gray-700">
-              Se souvenir de moi
-            </label>
-          </div>
-        </div>
-  
-        <button type="submit" 
-                class="w-full btn-primary flex justify-center items-center py-3 px-4">
-          <i class="fas fa-sign-in-alt mr-2"></i> Se connecter
-        </button>
-      </form>
-  
-      <div class="mt-6 text-center">
-        <p class="text-sm text-gray-600">
-          Vous n'avez pas de compte ? 
-          <a href="{{ url_for('auth_routes.select') }}" class="text-primary font-medium hover:underline">Créez-en un</a>
-        </p>
-      </div>
-  
-      <div class="mt-6">
-        <div class="relative">
-          <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-gray-300"></div>
-          </div>
-          <div class="relative flex justify-center text-sm">
-            <span class="px-2 bg-white text-gray-500">Ou connectez-vous avec</span>
-          </div>
-        </div>
-  
-        <div class="mt-6 grid grid-cols-2 gap-3">
-          <a href="#" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-            <i class="fab fa-google text-red-500 mr-2 mt-0.5"></i> Google
-          </a>
-          <a href="#" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-            <i class="fab fa-microsoft text-blue-600 mr-2 mt-0.5"></i> Microsoft
-          </a>
-        </div>
-      </div>
-    </div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Bouton Retour/Accueil -->
+    <div class="mb-8">
+    <a href="{{ url_for('auth_routes.home') }}" class="inline-flex items-center text-primary hover:text-blue-700 font-medium">
+      <i class="fas fa-arrow-left mr-2"></i> Retour à l'accueil
+    </a>
   </div>
-  <!-- Footer -->
-  <footer class="bg-dark text-white">
+    <!-- En-tête -->
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-dark mb-4">Choisissez votre profil</h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Sélectionnez votre profil pour accéder à l'interface adaptée à vos besoins.</p>
+    </div>
+
+    <!-- Cartes des rôles -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Carte Patient -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+        <div class="gradient-bg p-6 text-center">
+            <i class="fas fa-user-injured text-white text-4xl mb-4"></i>
+            <h2 class="text-2xl font-bold text-white">Patient</h2>
+        </div>
+        <div class="p-6">
+            <p class="text-gray-600 mb-6 text-center">Prenez rendez-vous, consultez votre dossier médical et gérez votre santé.</p>
+            <div class="flex flex-col space-y-4">
+            <a href="{{ url_for('auth_routes.register_patient') }}" class="btn-primary text-center">
+                <i class="fas fa-user-plus mr-2"></i>S'inscrire
+            </a>
+            <a href="{{ url_for('auth_routes.login_patient') }}" class="border border-primary text-primary hover:bg-primary hover:text-white font-medium py-2 px-6 rounded-lg transition-all duration-300 text-center">
+                <i class="fas fa-sign-in-alt mr-2"></i>Se connecter
+            </a>
+            </div>
+        </div>
+        </div>
+
+        <!-- Carte Médecin -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+        <div class="gradient-bg p-6 text-center">
+            <i class="fas fa-user-md text-white text-4xl mb-4"></i>
+            <h2 class="text-2xl font-bold text-white">Médecin</h2>
+        </div>
+        <div class="p-6">
+            <p class="text-gray-600 mb-6 text-center">Gérez vos consultations, accédez aux dossiers patients et établissez des diagnostics.</p>
+            <div class="flex flex-col space-y-4">
+            <a href="{{ url_for('auth_routes.register_doctor') }}" class="btn-primary text-center">
+                <i class="fas fa-user-plus mr-2"></i>S'inscrire
+            </a>
+            <a href="{{ url_for('auth_routes.login_doctor') }}" class="border border-primary text-primary hover:bg-primary hover:text-white font-medium py-2 px-6 rounded-lg transition-all duration-300 text-center">
+                <i class="fas fa-sign-in-alt mr-2"></i>Se connecter
+            </a>
+            </div>
+        </div>
+        </div>
+
+        <!-- Carte Infirmier -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+        <div class="gradient-bg p-6 text-center">
+            <i class="fas fa-user-nurse text-white text-4xl mb-4"></i>
+            <h2 class="text-2xl font-bold text-white">Infirmier</h2>
+        </div>
+        <div class="p-6">
+            <p class="text-gray-600 mb-6 text-center">Effectuez les soins, suivez les prescriptions et accompagnez les patients.</p>
+            <div class="flex flex-col space-y-4">
+            <a href="{{ url_for('auth_routes.register_nurse') }}" class="btn-primary text-center">
+                <i class="fas fa-user-plus mr-2"></i>S'inscrire
+            </a>
+            <a href="{{ url_for('auth_routes.login_nurse') }}" class="border border-primary text-primary hover:bg-primary hover:text-white font-medium py-2 px-6 rounded-lg transition-all duration-300 text-center">
+                <i class="fas fa-sign-in-alt mr-2"></i>Se connecter
+            </a>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Section d'aide -->
+    <div class="mt-16 bg-gray-50 rounded-xl p-8 text-center">
+        <h3 class="text-2xl font-bold text-dark mb-4">Vous ne savez pas quel profil choisir?</h3>
+        <p class="text-gray-600 mb-6 max-w-2xl mx-auto">Si vous êtes un patient, choisissez "Patient". Pour les professionnels de santé, sélectionnez le profil correspondant à votre fonction.</p>
+        <a href="#" class="inline-flex items-center text-primary font-medium hover:text-blue-700">
+        <i class="fas fa-question-circle mr-2"></i> Besoin d'aide?
+        </a>
+    </div>
+    </div>
+ <!-- Footer -->
+ <footer class="bg-dark text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="grid md:grid-cols-4 gap-8">
         <div>
