@@ -80,9 +80,15 @@
             {% if session.get('user_id') %}
               <span class="font-semibold">👤 {{ session.username }}</span>
               <strong>{{ session.role }}</strong>
-              <a href="{{ url_for('auth_routes.dashboard') }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 flex items-center">
-                <i class="fas fa-chart-line mr-2"></i> Dashboard
-              </a>
+                {% if session.role == 'patient' %}
+                  <a href="{{ url_for('auth_routes.dashboard_patient') }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 flex items-center">
+                      <i class="fas fa-chart-line mr-2"></i> Dashboard
+                  </a>
+                {% else %}
+                    <a href="{{ url_for('auth_routes.dashboard') }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 flex items-center">
+                      <i class="fas fa-chart-line mr-2"></i> Dashboard
+                      </a>
+                {% endif %}
               <a href="{{ url_for('auth_routes.logout') }}" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 flex items-center">
                 <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion
               </a>
@@ -145,7 +151,7 @@
         </div>
       </div>
       <div class="mt-4">
-        <a href="#" class="text-secondary text-sm font-medium hover:underline flex items-center">
+        <a href="{{ url_for('auth_routes.Listpatient') }}" class="text-secondary text-sm font-medium hover:underline flex items-center">
           Voir liste <i class="fas fa-arrow-right ml-1 text-xs"></i>
         </a>
       </div>

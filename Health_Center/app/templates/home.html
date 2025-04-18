@@ -78,9 +78,16 @@
         <div class="flex items-center space-x-4">
             {% if session.get('user_id') %}
               <span class="font-semibold">👤 {{ session.username }}</span>
-              <a href="{{ url_for('auth_routes.dashboard') }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 flex items-center">
-                <i class="fas fa-chart-line mr-2"></i> Dashboard
-              </a>
+
+                {% if session.role == 'patient' %}
+                    <a href="{{ url_for('auth_routes.dashboard_patient') }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 flex items-center">
+                        <i class="fas fa-chart-line mr-2"></i> Dashboard
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('auth_routes.dashboard') }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 flex items-center">
+                      <i class="fas fa-chart-line mr-2"></i> Dashboard
+                      </a>
+                {% endif %}
               <a href="{{ url_for('auth_routes.logout') }}" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 flex items-center">
                 <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion
               </a>

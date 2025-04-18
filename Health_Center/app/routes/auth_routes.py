@@ -7,9 +7,12 @@ from flask import session
 auth_routes = Blueprint('auth_routes', __name__, template_folder='templates')
 
 
+
 @auth_routes.route('/')
 def home():
     return render_template('home.html')
+
+
 
 
 @auth_routes.route('/register/doctor', methods=['GET', 'POST'])
@@ -33,6 +36,8 @@ def register_doctor():
     return render_template('register.html', role=role)
 
 
+
+
 @auth_routes.route('/register/nurse', methods=['GET', 'POST'])
 def register_nurse():
     role = 'nurse'  # préchargé pour le formulaire
@@ -53,6 +58,13 @@ def register_nurse():
 
     return render_template('register.html', role=role)
 
+from datetime import datetime
+
+
+
+
+
+
 @auth_routes.route('/register/patient', methods=['GET', 'POST'])
 def register_patient():
     role = 'patient' 
@@ -67,6 +79,9 @@ def register_patient():
         gender = request.form['gender']
         phone_number = request.form['phone_number']
         address = request.form['address']
+
+        # ✅ Convertir la date en objet datetime.date
+        date_of_birth = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
 
         hashed_pw = bcrypt.generate_password_hash(password).decode('utf-8')
 
@@ -86,9 +101,10 @@ def register_patient():
         db.session.add(new_patient)
         db.session.commit()
         flash("Inscription du patient réussie. Vous pouvez maintenant vous connecter.", "success")
-        return redirect(url_for('auth_routes.login'))
+        return redirect(url_for('auth_routes.select'))
 
     return render_template('/patients/register_patient.html', role=role)
+
 
 
 
@@ -113,6 +129,9 @@ def login_doctor():
     return render_template('login.html')
 
 
+
+
+
 @auth_routes.route('/login/nurse', methods=['GET', 'POST'])
 def login_nurse():
     if request.method == 'POST':
@@ -134,6 +153,10 @@ def login_nurse():
     return render_template('login.html')
 
 
+
+
+
+
 @auth_routes.route('/login/patient', methods=['GET', 'POST'])
 def login_patient():
     if request.method == 'POST':
@@ -148,7 +171,7 @@ def login_patient():
             session['role'] = user.role
 
             flash(f"Bienvenue {user.first_name} 👋", "success")
-            return redirect(url_for('auth_routes.dashboard'))
+            return redirect(url_for('auth_routes.dashboard_patient'))
 
         else:
             flash("Email ou mot de passe incorrect", "danger")
@@ -157,15 +180,26 @@ def login_patient():
     return render_template('login.html', role='patient')
 
 
+
+
 @auth_routes.route('/select')
 def select():
     return render_template('role_selection.html')
+
+
+@auth_routes.route('/PatientList')
+def Listpatient():
+    return render_template('patients/patientList.html')
+
 
 @auth_routes.route('/logout')
 def logout():
     session.clear()
     flash("Déconnexion réussie.", "success")
     return redirect(url_for('auth_routes.home'))
+
+
+
 
 @auth_routes.route('/dashboard')
 def dashboard():
@@ -177,3 +211,17 @@ def dashboard():
 
 
 
+
+
+
+@auth_routes.route('/dashboard/patient')
+def dashboard_patient():
+    if 'user_id' not in session:
+        flash("Veuillez vous connecter pour accéder au dashboard.", "danger")
+        return redirect(url_for('auth_routes.login'))
+    
+    if session.get('role') != 'patient':
+        flash("Accès non autorisé. Réservé aux patients.", "danger")
+        return redirect(url_for('auth_routes.login')) 
+
+    return render_template('patients/dashboard_patient.html', username=session.get('username'))
